@@ -1,0 +1,32 @@
+[
+  {
+    "title" : "Oasis Cover 1",
+    "image" : "images/gambar2.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-1"
+  },
+  {
+    "title" : "Oasis Cover 2",
+    "image" : "images/gambar3.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-2"
+  },
+  {
+    "title" : "Oasis Cover 3",
+    "image" : "images/gambar4.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-3"
+  },
+  {
+    "title" : "Oasis Cover 4",
+    "image" : "images/gambar5.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-4"
+  },
+  {
+    "title" : "Oasis Cover 5",
+    "image" : "images/gambar6.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-5"
+  },
+  {
+    "title" : "Oasis Cover 6",
+    "image" : "images/gambar7.jpeg",
+    "desc" : "Ini adalah cover band Oasis Ke-6"
+  }
+]

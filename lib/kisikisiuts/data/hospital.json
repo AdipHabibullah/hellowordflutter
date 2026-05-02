@@ -1,0 +1,44 @@
+[
+  {
+    "title": "RSUP Dr. M. Djamil Padang",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit rujukan pusat tipe A",
+    "latitude": -0.9143211,
+    "longitude": 100.466
+  },
+  {
+    "title": "Semen Padang Hospital",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit swasta dengan fasilitas modern",
+    "latitude": -0.9201234,
+    "longitude": 100.372
+  },
+  {
+    "title": "RS Hermina Padang",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit ibu, anak, dan umum",
+    "latitude": -0.9056789,
+    "longitude": 100.355
+  },
+  {
+    "title": "RS Islam Ibnu Sina Padang",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit swasta terkemuka",
+    "latitude": -0.9287654,
+    "longitude": 100.480
+  },
+  {
+    "title": "RSUD dr. Rasidin Padang",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit pemerintah tipe C",
+    "latitude": -0.9123456,
+    "longitude": 100.360
+  },
+  {
+    "title": "Rumah Sakit Universitas Andalas (UNAND)",
+    "image": "images/gambar2.jpeg",
+    "desc": "Rumah sakit pendidikan",
+    "latitude": -0.9354321,
+    "longitude": 100.410
+  }
+]
