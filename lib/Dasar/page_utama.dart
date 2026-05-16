@@ -5,6 +5,7 @@ import 'package:hello_word/page/form_register.dart';
 import 'package:hello_word/page/page_gambar1.dart';
 import 'package:hello_word/page/page_gambar2.dart';
 import 'package:hello_word/page/page_home_movie.dart';
+import 'package:hello_word/page/page_list_berita.dart';
 import 'package:hello_word/page/page_listview.dart';
 import 'package:hello_word/page/MAP/page_maps.dart';
 import 'package:hello_word/page/page_movie_grid.dart';
@@ -97,6 +98,12 @@ class PageUtama extends StatelessWidget {
         'icon': Icons.album,
         'color': Colors.blue,
         'page': const PageAlbumsJson(),
+      },
+      {
+        'title': 'Berita',
+        'icon': Icons.new_label,
+        'color': Colors.pinkAccent,
+        'page': const PageListBerita(),
       },
     ];
 

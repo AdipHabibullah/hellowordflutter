@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hello_word/models/model_berita.dart';
 import 'package:http/http.dart' as http;
 import 'package:hello_word/models/model_photos.dart';
 import 'package:hello_word/models/model_users.dart';
@@ -9,41 +10,57 @@ class ApiService {
   static const String urlUsers = "https://jsonplaceholder.typicode.com/users";
   static const String urlAlbums = "https://jsonplaceholder.typicode.com/albums";
 
-  static Future<List<ModelPhotos>> fetchDataPhotos() async{
+  static const String urlGambarBerita = "http://10.20.27.23/berita_api/gambar/";
+  static const String urlGetBerita = "http://10.20.27.23/berita_api/getBerita.php/";
+
+  static Future<List<ModelPhotos>> fetchDataPhotos() async {
     final response = await http.get(Uri.parse(urlPhotos));
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       List jsonData = json.decode(response.body);
-      return jsonData.take(50) //dibatasi 50 data dulu
+      return jsonData
+          .take(50) //dibatasi 50 data dulu
           .map((e) => ModelPhotos.fromJson(e))
           .toList();
-    }else{
+    } else {
       throw Exception("Gagal mengambil data");
     }
   }
 
-  static Future<List<ModelUsers>> fetchDataUsers() async{
+  static Future<List<ModelUsers>> fetchDataUsers() async {
     final response = await http.get(Uri.parse(urlUsers));
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       List jsonData = json.decode(response.body);
-      return jsonData.take(50) //dibatasi 50 data dulu
+      return jsonData
+          .take(50) //dibatasi 50 data dulu
           .map((e) => ModelUsers.fromJson(e))
           .toList();
-    }else{
+    } else {
       throw Exception("Gagal mengambil data");
     }
   }
 
-  static Future<List<ModelAlbums>> fetchDataAlbums() async{
+  static Future<List<ModelAlbums>> fetchDataAlbums() async {
     final response = await http.get(Uri.parse(urlAlbums));
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       List jsonData = json.decode(response.body);
-      return jsonData.take(50) //dibatasi 50 data dulu
+      return jsonData
+          .take(50) //dibatasi 50 data dulu
           .map((e) => ModelAlbums.fromJson(e))
           .toList();
-    }else{
+    } else {
+      throw Exception("Gagal mengambil data");
+    }
+  }
+
+  static Future<List<Datum>> getDataBerita() async {
+    final response = await http.get(Uri.parse(urlGetBerita));
+
+    if (response.statusCode == 200) {
+      return modelBeritaFromJson(response.body).data;
+    } else {
       throw Exception("Gagal mengambil data");
     }
   }
