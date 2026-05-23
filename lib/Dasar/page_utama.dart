@@ -8,8 +8,10 @@ import 'package:hello_word/page/page_home_movie.dart';
 import 'package:hello_word/page/page_list_berita.dart';
 import 'package:hello_word/page/page_listview.dart';
 import 'package:hello_word/page/MAP/page_maps.dart';
+import 'package:hello_word/page/page_login.dart';
 import 'package:hello_word/page/page_movie_grid.dart';
 import 'package:hello_word/page/page_photos_json.dart';
+import 'package:hello_word/page/page_register.dart';
 import 'package:hello_word/page/page_row_column.dart';
 import 'package:hello_word/page/page_simple_form.dart';
 import 'package:hello_word/page/page_stack.dart';
@@ -104,6 +106,18 @@ class PageUtama extends StatelessWidget {
         'icon': Icons.new_label,
         'color': Colors.pinkAccent,
         'page': const PageListBerita(),
+      },
+      {
+        'title': 'Register',
+        'icon': Icons.app_registration,
+        'color': Colors.brown,
+        'page': const PageRegister(),
+      },
+      {
+        'title': 'Login',
+        'icon': Icons.app_registration,
+        'color': Colors.brown,
+        'page': const PageLogin(),
       },
     ];
 

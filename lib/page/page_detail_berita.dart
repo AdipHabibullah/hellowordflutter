@@ -17,7 +17,7 @@ class PageDetailBerita extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(
-            "http://10.20.27.23/berita_api/gambar/${berita.gambarBerita}",
+            "http://10.20.31.48/berita_api/gambar/${berita.gambarBerita}",
             webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
             height: 200,
             width: double.infinity,

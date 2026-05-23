@@ -163,7 +163,7 @@ class _PageListBeritaState extends State<PageListBerita> {
                 topRight: Radius.circular(10),
               ),
               child: Image.network(
-                "http://10.20.27.23/berita_api/gambar/${berita.gambarBerita}",
+                "http://10.20.31.48/berita_api/gambar/${berita.gambarBerita}",
                 webHtmlElementStrategy: WebHtmlElementStrategy.prefer, //agar bisa keluar gambar di web
                 height: 200,
                 width: double.infinity,

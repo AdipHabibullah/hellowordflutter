@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hello_word/page/page_list_berita.dart';
+import 'package:hello_word/page/page_login.dart';
 import 'package:hello_word/services/api_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,7 +14,6 @@ class PageRegister extends StatefulWidget {
 }
 
 class _PageRegisterState extends State<PageRegister> {
-
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
@@ -40,11 +41,15 @@ class _PageRegisterState extends State<PageRegister> {
 
       final data = jsonDecode(response.body);
 
-      if (data["success"]) {
-        _showSnackBar("Berhasil register");
+      if (data['is_success']) {
+        _showSnackBar('Berhasil register');
         // kita arahkan ke halaman login
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PageLogin()),
+        );
       } else {
-        _showSnackBar("Gagal register");
+        _showSnackBar('Gagal register');
       }
     } catch (e) {
       _showSnackBar('Terjadi kesalahan saat melakukan registrasi ${e}');
@@ -52,11 +57,9 @@ class _PageRegisterState extends State<PageRegister> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -66,8 +69,74 @@ class _PageRegisterState extends State<PageRegister> {
         title: const Text("Register"),
         backgroundColor: Colors.blue,
       ),
-      body: const Center(
-        child: Text("Halaman Register"),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Username",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Email",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _namaLengkapController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Nama Lengkap",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepOrangeAccent,
+                ),
+                onPressed: register,
+                child: const Text("Register"),
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(16),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PageLogin()),
+                  );
+                },
+                child: const Text("Sudah punya akun? Login"), // tambah child
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
