@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hello_word/Dasar/page_utama.dart';
+import 'package:hello_word/helper/session_manager.dart';
 import 'package:hello_word/kisikisiuts/page/page_hospital.dart';
 import 'package:hello_word/page/form_register.dart';
 import 'package:hello_word/page/page_detail_movie.dart';
+import 'package:hello_word/page/page_list_berita.dart';
 import 'package:hello_word/page/page_listview.dart';
+import 'package:hello_word/page/page_login.dart';
 import 'package:hello_word/page/page_movie_grid.dart';
 import 'package:hello_word/page/page_photos_json.dart';
 import 'package:hello_word/page/page_row_column.dart';
@@ -42,8 +45,34 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
+      //gunakan future builder untuk cek session page home atau berita
+      home: FutureBuilder(
+        future: SessionManager.isLogin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
+          if (snapshot.hasData && snapshot.data == true) {
+            return FutureBuilder<Map<String, String?>>(
+              future: SessionManager.getUserSession(),
+              builder: (context, userSnapshot) {
+                if (userSnapshot.connectionState == ConnectionState.waiting) {
+                  return Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final userData = Map<String, dynamic>.from(
+                  userSnapshot.data ?? {},
+                );
+                return PageListBerita();
+              },
+            );
+          }
+
+          return PageLogin();
+        },
+      ),
       debugShowCheckedModeBanner: false,
-      home: const PageUtama(),
     );
   }
 }
@@ -101,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-          child: Text("Singles widget hierarki")
+        child: Text("Singles widget hierarki"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hello_word/page/page_detail_berita.dart';
 import 'package:hello_word/services/api_service.dart';
 import 'package:hello_word/models/model_berita.dart';
+import 'package:hello_word/helper/session_manager.dart';
+import 'package:hello_word/page/page_login.dart';
 
 class PageListBerita extends StatefulWidget {
-
   const PageListBerita({super.key});
 
   @override
@@ -20,10 +21,27 @@ class _PageListBeritaState extends State<PageListBerita> {
 
   final TextEditingController _searchCtrl = TextEditingController();
 
+  //variable penampung data login dari shared preferences
+  String? username;
+  String? email;
+  String? id;
+  String? tglDaftar;
+
   @override
   void initState() {
     super.initState();
     futureBerita = ApiService.getDataBerita();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final userData = await SessionManager.getUserSession();
+    setState(() {
+      username = userData['username'];
+      email = userData['email'];
+      id = userData['id'];
+      tglDaftar = userData['tgl_daftar'];
+    });
   }
 
   @override
@@ -49,8 +67,20 @@ class _PageListBeritaState extends State<PageListBerita> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List Berita'),
+        title: Text(username != null ? "Selamat Datang $username" : " List Berita"),
         backgroundColor: Colors.blueAccent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () async {
+              await SessionManager.logout();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => PageLogin()),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: futureBerita,
@@ -70,69 +100,73 @@ class _PageListBeritaState extends State<PageListBerita> {
           }
 
           return Column(
-              children: [
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TextField(
+                  controller: _searchCtrl,
+                  onChanged: _onSearchBar,
+                  decoration: InputDecoration(
+                    hintText: "Cari berita...",
+                    prefixIcon: const Icon(Icons.search, color: Colors.green),
+                    suffixIcon: _searchCtrl.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchCtrl.clear();
+                              _onSearchBar('');
+                            },
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Colors.green,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (_searchCtrl.text.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: TextField(
-                    controller: _searchCtrl,
-                    onChanged: _onSearchBar,
-                    decoration: InputDecoration(
-                      hintText: "Cari berita...",
-                      prefixIcon: const Icon(Icons.search, color: Colors.green),
-                      suffixIcon: _searchCtrl.text.isNotEmpty
-                          ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchCtrl.clear();
-                          _onSearchBar('');
+                  padding: EdgeInsetsGeometry.only(left: 16, bottom: 8),
+                  child: Text("${_filteredBerita.length} berita ditemukan"),
+                ),
+              Expanded(
+                child: _filteredBerita.isEmpty
+                    ? const Center(child: Text("Berita tidak ditemukan"))
+                    : RefreshIndicator(
+                        color: Colors.green,
+                        onRefresh: () async {
+                          setState(() {
+                            _allBerita.clear();
+                            futureBerita = ApiService.getDataBerita();
+                          });
                         },
-                      )
-                          : null,
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          itemCount: _filteredBerita.length,
+                          itemBuilder: (context, index) {
+                            return _buildBeritaCard(_filteredBerita[index]);
+                          },
+                        ),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: Colors.green, width: 2),
-                      ),
-                    ),
-                  ),
-                ),
-                if(_searchCtrl.text.isNotEmpty)
-                  Padding(padding: EdgeInsetsGeometry.only(left: 16, bottom: 8),
-                    child: Text("${_filteredBerita.length} berita ditemukan"),
-                  ),
-                Expanded(
-                  child: _filteredBerita.isEmpty
-                      ? const Center(child: Text("Berita tidak ditemukan"))
-                      : RefreshIndicator(
-                    color: Colors.green,
-                    onRefresh: () async {
-                      setState(() {
-                        _allBerita.clear();
-                        futureBerita = ApiService.getDataBerita();
-                      });
-                    },
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
-                      itemCount: _filteredBerita.length,
-                      itemBuilder: (context, index) {
-                        return _buildBeritaCard(
-                            _filteredBerita[index]);
-                      },
-                    ),
-                  ),
-                ),
-              ]
+              ),
+            ],
           );
         },
       ),
@@ -164,19 +198,20 @@ class _PageListBeritaState extends State<PageListBerita> {
               ),
               child: Image.network(
                 "http://10.20.31.48/berita_api/gambar/${berita.gambarBerita}",
-                webHtmlElementStrategy: WebHtmlElementStrategy.prefer, //agar bisa keluar gambar di web
+                webHtmlElementStrategy: WebHtmlElementStrategy
+                    .prefer, //agar bisa keluar gambar di web
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-            Padding(padding: EdgeInsets.all(10),
-              child: Text(berita.judul, maxLines: 2,),
-            )
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(berita.judul, maxLines: 2),
+            ),
           ],
         ),
       ),
     );
   }
-
 }

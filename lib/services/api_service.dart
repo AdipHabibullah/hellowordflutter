@@ -10,11 +10,11 @@ class ApiService {
   static const String urlUsers = "https://jsonplaceholder.typicode.com/users";
   static const String urlAlbums = "https://jsonplaceholder.typicode.com/albums";
 
-  static const String urlGambarBerita = "http://10.20.31.48/berita_api/gambar/";
-  static const String urlGetBerita = "http://10.20.31.48/berita_api/getBerita.php/";
+  static const String urlGambarBerita = "http://10.135.237.156/berita_api/gambar/";
+  static const String urlGetBerita = "http://10.135.237.156/berita_api/getBerita.php/";
   //register
-  static const String urlRegister = "http://10.20.31.48/berita_api/register.php";
-  static const String urlLogin = "http://10.20.31.48/berita_api/login.php";
+  static const String urlRegister = "http://10.135.237.156/berita_api/register.php";
+  static const String urlLogin = "http://10.135.237.156/berita_api/login.php";
 
   static Future<List<ModelPhotos>> fetchDataPhotos() async {
     final response = await http.get(Uri.parse(urlPhotos));

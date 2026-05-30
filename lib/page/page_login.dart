@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_word/page/page_list_berita.dart';
 import 'package:hello_word/page/page_register.dart';
 import 'package:http/http.dart' as http;
+import 'package:hello_word/helper/session_manager.dart';
 
 import 'package:hello_word/services/api_service.dart';
 
@@ -41,6 +42,9 @@ class _PageLoginState extends State<PageLogin> {
       final data = jsonDecode(response.body); // pindah ke dalam try + tambah ;
       if (data['is_success'] == true) {
         _showSnackBar('Berhasil login');
+
+        //simpan data session
+        await SessionManager.saveUserSession(data['data']);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const PageListBerita()),
